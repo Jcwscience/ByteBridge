@@ -26,8 +26,3 @@ struct GaugeView: View {
         }
     }
 }
-
-
-#Preview {
-    ContentView()
-}
