@@ -8,10 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		522BA9C72AC30B260041834E /* ByteBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522BA9C62AC30B260041834E /* ByteBridgeApp.swift */; };
-		522BA9C92AC30B260041834E /* DevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522BA9C82AC30B260041834E /* DevicesView.swift */; };
+		522BA9C92AC30B260041834E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522BA9C82AC30B260041834E /* ContentView.swift */; };
 		522BA9CB2AC30B270041834E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 522BA9CA2AC30B270041834E /* Assets.xcassets */; };
 		522BA9CE2AC30B270041834E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 522BA9CD2AC30B270041834E /* Preview Assets.xcassets */; };
 		522BA9D52AC30E220041834E /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522BA9D42AC30E220041834E /* BluetoothManager.swift */; };
+		523987072AC619F600889B9C /* DevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523987062AC619F600889B9C /* DevicesView.swift */; };
+		523987092AC61A1D00889B9C /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523987082AC61A1D00889B9C /* DashboardView.swift */; };
+		5239870B2AC61A3300889B9C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5239870A2AC61A3300889B9C /* SettingsView.swift */; };
+		5239870D2AC6220C00889B9C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5239870C2AC6220C00889B9C /* Colors.xcassets */; };
 		52A605862AC3A85C00BDEF11 /* DataProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A605852AC3A85C00BDEF11 /* DataProcessor.swift */; };
 		52A605882AC4DEA700BDEF11 /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A605872AC4DEA700BDEF11 /* Widgets.swift */; };
 /* End PBXBuildFile section */
@@ -19,10 +23,14 @@
 /* Begin PBXFileReference section */
 		522BA9C32AC30B260041834E /* ByteBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ByteBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		522BA9C62AC30B260041834E /* ByteBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteBridgeApp.swift; sourceTree = "<group>"; };
-		522BA9C82AC30B260041834E /* DevicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesView.swift; sourceTree = "<group>"; };
+		522BA9C82AC30B260041834E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		522BA9CA2AC30B270041834E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		522BA9CD2AC30B270041834E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		522BA9D42AC30E220041834E /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
+		523987062AC619F600889B9C /* DevicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesView.swift; sourceTree = "<group>"; };
+		523987082AC61A1D00889B9C /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		5239870A2AC61A3300889B9C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		5239870C2AC6220C00889B9C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		52A605852AC3A85C00BDEF11 /* DataProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProcessor.swift; sourceTree = "<group>"; };
 		52A605872AC4DEA700BDEF11 /* Widgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,8 +65,10 @@
 		522BA9C52AC30B260041834E /* ByteBridge */ = {
 			isa = PBXGroup;
 			children = (
+				523987052AC619C400889B9C /* Views */,
 				522BA9C62AC30B260041834E /* ByteBridgeApp.swift */,
-				522BA9C82AC30B260041834E /* DevicesView.swift */,
+				522BA9C82AC30B260041834E /* ContentView.swift */,
+				5239870C2AC6220C00889B9C /* Colors.xcassets */,
 				52A605872AC4DEA700BDEF11 /* Widgets.swift */,
 				522BA9D42AC30E220041834E /* BluetoothManager.swift */,
 				52A605852AC3A85C00BDEF11 /* DataProcessor.swift */,
@@ -74,6 +84,16 @@
 				522BA9CD2AC30B270041834E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		523987052AC619C400889B9C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				523987062AC619F600889B9C /* DevicesView.swift */,
+				523987082AC61A1D00889B9C /* DashboardView.swift */,
+				5239870A2AC61A3300889B9C /* SettingsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,6 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5239870D2AC6220C00889B9C /* Colors.xcassets in Resources */,
 				522BA9CE2AC30B270041834E /* Preview Assets.xcassets in Resources */,
 				522BA9CB2AC30B270041834E /* Assets.xcassets in Resources */,
 			);
@@ -146,8 +167,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				523987072AC619F600889B9C /* DevicesView.swift in Sources */,
+				5239870B2AC61A3300889B9C /* SettingsView.swift in Sources */,
 				52A605862AC3A85C00BDEF11 /* DataProcessor.swift in Sources */,
-				522BA9C92AC30B260041834E /* DevicesView.swift in Sources */,
+				522BA9C92AC30B260041834E /* ContentView.swift in Sources */,
+				523987092AC61A1D00889B9C /* DashboardView.swift in Sources */,
 				522BA9D52AC30E220041834E /* BluetoothManager.swift in Sources */,
 				52A605882AC4DEA700BDEF11 /* Widgets.swift in Sources */,
 				522BA9C72AC30B260041834E /* ByteBridgeApp.swift in Sources */,

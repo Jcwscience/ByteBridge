@@ -7,19 +7,30 @@
 
 import SwiftUI
 
-struct DevicesView: View {
-    @StateObject private var bluetoothManager = BluetoothManager()
-
+struct ContentView: View {
     var body: some View {
-        VStack {
-            
+        TabView {
+            DevicesView()
+                .tabItem {
+                    Image(systemName: "cpu")
+                    Text("Devices")
+                }
+            DashboardView()
+                .tabItem {
+                    Image(systemName: "gauge.with.dots.needle.bottom.100percent")
+                    Text("Dashboard")
+                }
+            SettingsView()
+                .navigationTitle("Settings")
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
+                }
         }
-        .padding()
     }
 }
 
 
-
 #Preview {
-    DevicesView()
+    ContentView()
 }
