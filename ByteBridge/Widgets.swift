@@ -20,9 +20,25 @@ struct GaugeView: View {
             // Needle
             Rectangle()
                 .fill(Color.blue)
-                .frame(width: 10, height: 150) // Adjust size as needed
-                .offset(y: -75) // Move it up to the edge of the circle
+                .frame(width: 10, height: 30) // Adjust size as needed
+                .offset(y: -20) // Move it up to the edge of the circle
                 .rotationEffect(.degrees(-120 + 240 * value)) // Convert the [0,1] value to [-120,120] degrees
         }
+        .padding()
     }
+}
+
+struct WidgetPreview: View {
+    var body: some View {
+        RoundedRectangle(cornerRadius: 25.0)
+            .foregroundStyle(Color(.red).gradient)
+            .frame(width: 100, height: 100)
+            .overlay(alignment: .center, content: {
+                GaugeView(value: 0.7)
+            })
+    }
+}
+
+#Preview {
+    WidgetPreview()
 }

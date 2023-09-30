@@ -18,9 +18,9 @@ struct DashboardView: View {
                     AddWidgetView()
                 })
                 Spacer()
-                AddWidgetView()
+                WidgetView()
                 Spacer()
-                AddWidgetView()
+                WidgetView()
                 Spacer()
             }
             Spacer()
@@ -32,15 +32,25 @@ struct DashboardView: View {
 
 struct AddWidgetView: View {
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerSize: CGSize(width: 20, height: 20), style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
-                .stroke(style: StrokeStyle(lineWidth: 3))
-                .foregroundStyle(Color(.gray))
-                .frame(width: 100, height: 100)
-            Image(systemName: "plus.app.fill")
-                .resizable()
-                .frame(width: 50, height: 50)
-        }
+        RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
+            .stroke(style: .init(lineWidth: 3))
+            .overlay(content: {
+                Image(systemName: "plus.app.fill")
+                    .font(.largeTitle)
+            })
+            .frame(width: 100, height: 100)
+    }
+}
+
+struct WidgetView: View {
+    var body: some View {
+        RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
+            .foregroundStyle(Color(.red).gradient)
+            
+            .overlay(content: {
+                GaugeView(value: 0.7)
+            })
+            .frame(width: 100, height: 100)
     }
 }
 

@@ -10,22 +10,26 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            DevicesView()
-                .tabItem {
-                    Image(systemName: "cpu")
-                    Text("Devices")
-                }
-            DashboardView()
-                .tabItem {
-                    Image(systemName: "gauge.with.dots.needle.bottom.100percent")
-                    Text("Dashboard")
-                }
-            SettingsView()
-                .navigationTitle("Settings")
-                .tabItem {
-                    Image(systemName: "gear")
-                    Text("Settings")
-                }
+            Group {
+                DevicesView()
+                    .tabItem {
+                        Image(systemName: "cpu")
+                        Text("Devices")
+                    }
+                DashboardView()
+                    .tabItem {
+                        Image(systemName: "gauge.with.dots.needle.bottom.100percent")
+                        Text("Dashboard")
+                    }
+                SettingsView()
+                    .navigationTitle("Settings")
+                    .tabItem {
+                        Image(systemName: "gear")
+                        Text("Settings")
+                    }
+            }
+            .toolbarBackground(.visible, for: .tabBar)
+            .toolbarBackground(Color(.secondarySystemFill), for: .tabBar)
         }
     }
 }
