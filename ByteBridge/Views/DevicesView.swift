@@ -6,18 +6,42 @@
 //
 
 import SwiftUI
+import CoreBluetooth
 
 struct DevicesView: View {
+    @StateObject var bluetoothManager = BluetoothManager()
+    @State var showDevicePicker = false
+    @State var connectedDevices: [CBPeripheral] = []
+    
     var body: some View {
         VStack {
-            ScrollView {
-                DeviceView(deviceName: "Device 1", deviceUUID: "123456789")
-                    .padding([.leading, .trailing])
-                DeviceView(deviceName: "Device 2", deviceUUID: "123456789")
-                    .padding([.leading, .trailing])
+            //ScrollView {
+            //    DeviceView(deviceName: "Device 1", deviceUUID: "123456789")
+            //        .padding([.leading, .trailing])
+            //    DeviceView(deviceName: "Device 2", deviceUUID: "123456789")
+            //        .padding([.leading, .trailing])
+            //}
+            List(connectedDevices, id: \.identifier) { device in
+                HStack {
+                    Text(device.name ?? "Unknown")
+                    Spacer()
+                    if device == bluetoothManager.connectedPeripheral {
+                        Text("Connected")
+                        Button("Disconnect") {
+                            // Logic for disconnect
+                        }
+                    } else {
+                        Button("Connect") {
+                            // Logic for connect
+                        }
+                    }
+                }
             }
             Spacer()
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+            Button(action: {
+                showDevicePicker = true
+                bluetoothManager.startScan()
+            }, label: {
                 Capsule()
                     .foregroundStyle(Color(.blue).gradient)
                     .frame(width: 300, height: 50)
@@ -34,6 +58,22 @@ struct DevicesView: View {
                             .padding(.leading, 15)
                     }
             })
+            .popover(isPresented: $showDevicePicker, content: {
+                            VStack {
+                                List(bluetoothManager.discoveredPeripherals, id: \.identifier) { device in
+                                    Text(device.name ?? "Unknown")
+                                        .onTapGesture {
+                                            connectedDevices.append(device)
+                                            showDevicePicker = false
+                                            bluetoothManager.stopScan()
+                                        }
+                                }
+                                Button("Cancel") {
+                                    showDevicePicker = false
+                                    bluetoothManager.stopScan()
+                                }
+                            }
+                        })
         }
         .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
         .padding(.bottom, 25)
