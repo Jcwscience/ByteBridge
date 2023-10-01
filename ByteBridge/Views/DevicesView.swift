@@ -12,6 +12,8 @@ struct DevicesView: View {
     @StateObject var bluetoothManager = BluetoothManager()
     @State var showDevicePicker = false
     @State var connectedDevices: [CBPeripheral] = []
+    @State var savedDevices: [CBPeripheral] = []
+    @State var discoveredServices: [CBService] = []
     
     var body: some View {
         VStack {
@@ -21,21 +23,30 @@ struct DevicesView: View {
             //    DeviceView(deviceName: "Device 2", deviceUUID: "123456789")
             //        .padding([.leading, .trailing])
             //}
-            List(connectedDevices, id: \.identifier) { device in
-                HStack {
-                    Text(device.name ?? "Unknown")
-                    Spacer()
-                    if device == bluetoothManager.connectedPeripheral {
-                        Text("Connected")
-                        Button("Disconnect") {
-                            // Logic for disconnect
-                        }
-                    } else {
-                        Button("Connect") {
-                            // Logic for connect
+            
+            // FIX A device can be clicked multiple times causing a clash of uuid values in list
+            List(savedDevices, id: \.identifier) { device in
+                VStack {
+                    HStack {
+                        Text(device.name ?? "Unknown")
+                        Spacer()
+                        if device == bluetoothManager.connectedPeripheral {
+                            Text("Connected")
+                            Button("Disconnect") {
+                                bluetoothManager.disconnectFromDevice(device)
+                            }
+                        } else {
+                            Button("Connect") {
+                                bluetoothManager.connectToDevice(device)
+                                print("Connect Pressed")
+                            }
                         }
                     }
                 }
+            }
+            // FIX ! Crash issue later
+            List(bluetoothManager.discoveredServices!, id: \.uuid) { service in
+                Text(service.description)
             }
             Spacer()
             Button(action: {
@@ -63,7 +74,7 @@ struct DevicesView: View {
                                 List(bluetoothManager.discoveredPeripherals, id: \.identifier) { device in
                                     Text(device.name ?? "Unknown")
                                         .onTapGesture {
-                                            connectedDevices.append(device)
+                                            savedDevices.append(device)
                                             showDevicePicker = false
                                             bluetoothManager.stopScan()
                                         }
@@ -75,7 +86,6 @@ struct DevicesView: View {
                             }
                         })
         }
-        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
         .padding(.bottom, 25)
     }
 }

@@ -24,6 +24,7 @@ struct SettingsView: View {
                     Text("Setting 2")
                 }
             }
+            .listRowBackground(Color(.settingsBackground))
             Section {
                 Picker(selection: $appTheme, label: Text("Appearance")) {
                     Text("System").tag(Theme.system)
@@ -32,6 +33,7 @@ struct SettingsView: View {
                 }
                 .pickerStyle(.inline)
             }
+            .listRowBackground(Color(.settingsBackground))
         }
     }
 }

@@ -11,7 +11,8 @@ import CoreBluetooth
 class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, ObservableObject {
     var centralManager: CBCentralManager!
     @Published var discoveredPeripherals: [CBPeripheral] = []
-    var connectedPeripheral: CBPeripheral?
+    @Published var connectedPeripheral: CBPeripheral?
+    @Published var discoveredServices: [CBService]? = []
 
     override init() {
         super.init()
@@ -41,14 +42,33 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
 
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        discoveredServices = peripheral.services
+        // Here you can access peripheral.services to see the discovered services
+    }
+    
+    func connectToDevice(_ peripheral: CBPeripheral) {
+        centralManager.connect(peripheral, options: nil)
+    }
+    
+    func disconnectFromDevice(_ peripheral: CBPeripheral) {
+        guard let connectedPeripheral = connectedPeripheral else { return }
+        centralManager.cancelPeripheralConnection(connectedPeripheral)
+    }
+
+    // Add these delegate functions to know when connected or disconnected:
+    
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         connectedPeripheral = peripheral
         peripheral.delegate = self
         peripheral.discoverServices(nil)
     }
-
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        // Here you can access peripheral.services to see the discovered services
+    
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        if peripheral == connectedPeripheral {
+            connectedPeripheral = nil
+        }
+        // You can handle errors here or notify the user if needed
     }
 
 }
