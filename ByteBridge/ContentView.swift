@@ -13,6 +13,8 @@ struct ContentView: View {
         TabView {
             Group {
                 DevicesView()
+                    .navigationTitle("Devices")
+                    .navigationBarTitleDisplayMode(.inline)
                 .tabItem {
                     Image(systemName: "cpu")
                     Text("Devices")

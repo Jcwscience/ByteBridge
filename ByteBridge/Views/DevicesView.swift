@@ -25,7 +25,7 @@ struct DevicesView: View {
                     .padding()
                 ScrollView {
                     ForEach(0..<10) { i in
-                        NavigationLink(destination: ServicesView(), label: {
+                        NavigationLink(destination: ServicesView().navigationTitle("Services"), label: {
                             RoundedRectangle(cornerRadius: 15)
                                 .foregroundStyle(.ultraThinMaterial)
                                 .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
@@ -65,10 +65,15 @@ struct DeviceView: View {
 
 struct ServicesView: View {
     var body: some View {
-        ScrollView {
-            VStack {
-                RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .frame(width: 250, height: 100)
+        ZStack {
+            Rectangle()
+                .foregroundStyle(Color(.green).gradient)
+                .ignoresSafeArea()
+            ScrollView {
+                VStack {
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .frame(width: 250, height: 100)
+                }
             }
         }
     }

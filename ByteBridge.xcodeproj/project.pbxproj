@@ -20,7 +20,6 @@
 		52A605862AC3A85C00BDEF11 /* DataProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A605852AC3A85C00BDEF11 /* DataProcessor.swift */; };
 		52A605882AC4DEA700BDEF11 /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A605872AC4DEA700BDEF11 /* Widgets.swift */; };
 		F952C25D2ACF483A00BED45E /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F952C25C2ACF483A00BED45E /* TestView.swift */; };
-		F952C2602ACF53E800BED45E /* NavigationTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = F952C25F2ACF53E800BED45E /* NavigationTransitions */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +44,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F952C2602ACF53E800BED45E /* NavigationTransitions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,7 +119,6 @@
 			);
 			name = ByteBridge;
 			packageProductDependencies = (
-				F952C25F2ACF53E800BED45E /* NavigationTransitions */,
 			);
 			productName = ByteBridge;
 			productReference = 522BA9C32AC30B260041834E /* ByteBridge.app */;
@@ -399,13 +396,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		F952C25F2ACF53E800BED45E /* NavigationTransitions */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NavigationTransitions;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 522BA9BB2AC30B250041834E /* Project object */;
 }
