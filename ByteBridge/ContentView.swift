@@ -9,13 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
+        
         TabView {
             Group {
                 DevicesView()
-                    .tabItem {
-                        Image(systemName: "cpu")
-                        Text("Devices")
-                    }
+                .tabItem {
+                    Image(systemName: "cpu")
+                    Text("Devices")
+                }
+
                 DashboardView()
                     .tabItem {
                         Image(systemName: "gauge.with.dots.needle.bottom.100percent")
@@ -30,6 +32,10 @@ struct ContentView: View {
             }
             .toolbarBackground(.visible, for: .tabBar)
             .toolbarBackground(Color(.secondarySystemFill), for: .tabBar)
+            //.background(content: {
+            //    AuroraView()
+            //        .ignoresSafeArea()
+            //})
         }
     }
 }

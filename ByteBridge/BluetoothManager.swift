@@ -13,6 +13,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     @Published var discoveredPeripherals: [CBPeripheral] = []
     @Published var connectedPeripheral: CBPeripheral?
     @Published var discoveredServices: [CBService]? = []
+    @Published var characteristicValue: Data?
 
     override init() {
         super.init()
@@ -44,9 +45,34 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         discoveredServices = peripheral.services
+        guard let services = peripheral.services else { return }
+        
+        for service in services {
+            discoverCharacteristics(for: service)
+        }
         // Here you can access peripheral.services to see the discovered services
     }
     
+    func discoverCharacteristics(for service: CBService) {
+        connectedPeripheral?.discoverCharacteristics(nil, for: service) // nil to discover all characteristics for the service
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        guard let characteristics = service.characteristics else {
+            return
+        }
+        print(characteristics)
+        for characteristic in characteristics {
+            if characteristic.properties.contains(.notify) {
+                peripheral.setNotifyValue(true, for: characteristic)
+            }
+        }
+    }
+
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        characteristicValue = characteristic.value
+    }
+
     func connectToDevice(_ peripheral: CBPeripheral) {
         centralManager.connect(peripheral, options: nil)
     }
