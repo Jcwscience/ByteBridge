@@ -7,60 +7,42 @@
 
 import SwiftUI
 import CoreBluetooth
+import NavigationTransitions
+import CoreHaptics
 
 struct DevicesView: View {
     @StateObject var bluetoothManager = BluetoothManager()
     @State var showDevicePicker = false
-    @State var connectedDevices: [CBPeripheral] = []
     @State var savedDevices: [CBPeripheral] = []
-    
+    let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
     var body: some View {
         NavigationStack {
-            VStack {
+            ZStack {
+                Rectangle()
+                    .foregroundStyle(Color(.green).gradient)
+                    .ignoresSafeArea()
+                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                    .foregroundStyle(.ultraThinMaterial)
+                    .padding()
                 ScrollView {
-                    VStack {
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                    ForEach(0..<10) { i in
+                        NavigationLink(destination: ServicesView(), label: {
+                            RoundedRectangle(cornerRadius: 15)
+                                .foregroundStyle(.ultraThinMaterial)
+                                .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                                .overlay {Text("Test").font(.largeTitle).foregroundStyle(Color(.black))}
+                                .scrollTransition {content, phase in content
+                                        .opacity(phase.isIdentity ? 1 : 0)
+                                        .rotation3DEffect(
+                                            .degrees(phase.value * -90),axis: (x: 1.0, y: 0.0, z: 0.0), anchor: phase.value < 0 ? .bottom : .top
+                                        )
+                                        //.offset(y: phase.value * -50)
+                                }
+                        })
                     }
                 }
-                Spacer()
-                Button(action: {
-                    showDevicePicker = true
-                    bluetoothManager.startScan()
-                }, label: {
-                    Capsule()
-                        .foregroundStyle(Color(.blue).gradient)
-                        .frame(width: 300, height: 50)
-                        .overlay(alignment: .center, content: {
-                            Text("Add Device")
-                                .foregroundStyle(Color(.black))
-                                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                                .bold()
-                        })
-                        .overlay(alignment: .leading) {
-                            Image(systemName: "plus.square.fill")
-                                .foregroundStyle(Color(.black))
-                                .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                                .padding(.leading, 15)
-                        }
-                })
-                .popover(isPresented: $showDevicePicker, content: {
-                    VStack {
-                        List(bluetoothManager.discoveredPeripherals, id: \.identifier) { device in
-                            Text(device.name ?? "Unknown")
-                                .onTapGesture {
-                                    savedDevices.append(device)
-                                    showDevicePicker = false
-                                    bluetoothManager.stopScan()
-                                }
-                        }
-                        Button("Cancel") {
-                            showDevicePicker = false
-                            bluetoothManager.stopScan()
-                        }
-                    }
-                })
+                .padding(40)
             }
-            .padding(.bottom, 25)
         }
     }
 }
@@ -87,10 +69,12 @@ struct ServicesView: View {
         ScrollView {
             VStack {
                 RoundedRectangle(cornerRadius: 15, style: .continuous)
+                    .frame(width: 250, height: 100)
             }
         }
     }
 }
+
 
 #Preview {
     ContentView()

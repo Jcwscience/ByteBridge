@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,8 @@
 		527E111B2ACC67CB006E70E4 /* AuroraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527E111A2ACC67CB006E70E4 /* AuroraView.swift */; };
 		52A605862AC3A85C00BDEF11 /* DataProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A605852AC3A85C00BDEF11 /* DataProcessor.swift */; };
 		52A605882AC4DEA700BDEF11 /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A605872AC4DEA700BDEF11 /* Widgets.swift */; };
+		F952C25D2ACF483A00BED45E /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F952C25C2ACF483A00BED45E /* TestView.swift */; };
+		F952C2602ACF53E800BED45E /* NavigationTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = F952C25F2ACF53E800BED45E /* NavigationTransitions */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,7 @@
 		527E111A2ACC67CB006E70E4 /* AuroraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuroraView.swift; sourceTree = "<group>"; };
 		52A605852AC3A85C00BDEF11 /* DataProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProcessor.swift; sourceTree = "<group>"; };
 		52A605872AC4DEA700BDEF11 /* Widgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
+		F952C25C2ACF483A00BED45E /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F952C2602ACF53E800BED45E /* NavigationTransitions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +99,7 @@
 				523987082AC61A1D00889B9C /* DashboardView.swift */,
 				5239870A2AC61A3300889B9C /* SettingsView.swift */,
 				527E111A2ACC67CB006E70E4 /* AuroraView.swift */,
+				F952C25C2ACF483A00BED45E /* TestView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -115,6 +120,9 @@
 			dependencies = (
 			);
 			name = ByteBridge;
+			packageProductDependencies = (
+				F952C25F2ACF53E800BED45E /* NavigationTransitions */,
+			);
 			productName = ByteBridge;
 			productReference = 522BA9C32AC30B260041834E /* ByteBridge.app */;
 			productType = "com.apple.product-type.application";
@@ -143,6 +151,9 @@
 				Base,
 			);
 			mainGroup = 522BA9BA2AC30B250041834E;
+			packageReferences = (
+				F952C25E2ACF53E800BED45E /* XCLocalSwiftPackageReference "../swiftui-navigation-transitions" */,
+			);
 			productRefGroup = 522BA9C42AC30B260041834E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -176,6 +187,7 @@
 				52A605862AC3A85C00BDEF11 /* DataProcessor.swift in Sources */,
 				522BA9C92AC30B260041834E /* ContentView.swift in Sources */,
 				523987092AC61A1D00889B9C /* DashboardView.swift in Sources */,
+				F952C25D2ACF483A00BED45E /* TestView.swift in Sources */,
 				522BA9D52AC30E220041834E /* BluetoothManager.swift in Sources */,
 				52A605882AC4DEA700BDEF11 /* Widgets.swift in Sources */,
 				522BA9C72AC30B260041834E /* ByteBridgeApp.swift in Sources */,
@@ -388,6 +400,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F952C25E2ACF53E800BED45E /* XCLocalSwiftPackageReference "../swiftui-navigation-transitions" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../swiftui-navigation-transitions";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F952C25F2ACF53E800BED45E /* NavigationTransitions */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NavigationTransitions;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 522BA9BB2AC30B250041834E /* Project object */;
 }
