@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -152,7 +152,6 @@
 			);
 			mainGroup = 522BA9BA2AC30B250041834E;
 			packageReferences = (
-				F952C25E2ACF53E800BED45E /* XCLocalSwiftPackageReference "../swiftui-navigation-transitions" */,
 			);
 			productRefGroup = 522BA9C42AC30B260041834E /* Products */;
 			projectDirPath = "";
@@ -400,13 +399,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		F952C25E2ACF53E800BED45E /* XCLocalSwiftPackageReference "../swiftui-navigation-transitions" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../swiftui-navigation-transitions";
-		};
-/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		F952C25F2ACF53E800BED45E /* NavigationTransitions */ = {

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CoreBluetooth
-import NavigationTransitions
 import CoreHaptics
 
 struct DevicesView: View {
