@@ -10,34 +10,34 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         
-        TabView {
-            Group {
-                DevicesView()
-                    .navigationTitle("Devices")
-                    .navigationBarTitleDisplayMode(.inline)
-                .tabItem {
-                    Image(systemName: "cpu")
-                    Text("Devices")
-                }
+        NavigationStack {
+            TabView {
+                Group {
+                    DevicesView()
+                    .tabItem {
+                        Image(systemName: "cpu")
+                        Text("Devices")
+                    }
 
-                DashboardView()
-                    .tabItem {
-                        Image(systemName: "gauge.with.dots.needle.bottom.100percent")
-                        Text("Dashboard")
-                    }
-                SettingsView()
-                    .navigationTitle("Settings")
-                    .tabItem {
-                        Image(systemName: "gear")
-                        Text("Settings")
-                    }
+                    DashboardView()
+                        .tabItem {
+                            Image(systemName: "gauge.with.dots.needle.bottom.100percent")
+                            Text("Dashboard")
+                        }
+                    SettingsView()
+                        .navigationTitle("Settings")
+                        .tabItem {
+                            Image(systemName: "gear")
+                            Text("Settings")
+                        }
+                }
+                .toolbarBackground(.visible, for: .tabBar)
+                .toolbarBackground(Color(.secondarySystemFill), for: .tabBar)
+                //.background(content: {
+                //    AuroraView()
+                //        .ignoresSafeArea()
+                //})
             }
-            .toolbarBackground(.visible, for: .tabBar)
-            .toolbarBackground(Color(.secondarySystemFill), for: .tabBar)
-            //.background(content: {
-            //    AuroraView()
-            //        .ignoresSafeArea()
-            //})
         }
     }
 }
