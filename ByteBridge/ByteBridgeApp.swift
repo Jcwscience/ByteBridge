@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct ByteBridgeApp: App {
+    //@StateObject var bluetoothManager = BluetoothManager()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                //.environmentObject(bluetoothManager)
                 //.environment(\.colorScheme, .dark)
         }
     }

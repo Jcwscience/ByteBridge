@@ -12,6 +12,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     var centralManager: CBCentralManager!
     @Published var discoveredPeripherals: [CBPeripheral] = []
     @Published var connectedPeripheral: CBPeripheral?
+    @Published var isConnected = false
     @Published var discoveredServices: [CBService]? = []
     @Published var characteristicValue: Data?
 
@@ -80,11 +81,13 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func disconnectFromDevice(_ peripheral: CBPeripheral) {
         guard let connectedPeripheral = connectedPeripheral else { return }
         centralManager.cancelPeripheralConnection(connectedPeripheral)
+        isConnected = false
     }
 
     // Add these delegate functions to know when connected or disconnected:
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        isConnected = true
         connectedPeripheral = peripheral
         peripheral.delegate = self
         peripheral.discoverServices(nil)
