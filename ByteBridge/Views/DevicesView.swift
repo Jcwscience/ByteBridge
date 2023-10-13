@@ -9,7 +9,7 @@ import SwiftUI
 import CoreBluetooth
 
 struct DevicesView: View {
-    @StateObject var bluetoothManager = BluetoothManager()
+    @StateObject var bluetoothManager: BluetoothManager
     @State var showDevicePicker = false
     @State var savedDevices: [CBPeripheral] = []
     var body: some View {
@@ -17,7 +17,7 @@ struct DevicesView: View {
             ZStack {
                 //AuroraView()
                 Rectangle()
-                    .foregroundStyle(Color(.green).gradient)
+                    .foregroundStyle(Color(.gray).gradient)
                     .ignoresSafeArea()
                 RoundedRectangle(cornerRadius: 15, style: .continuous)
                     .foregroundStyle(.ultraThinMaterial)
@@ -37,11 +37,19 @@ struct DevicesView: View {
                     })
                     ScrollView {
                         ForEach(savedDevices, id: \.identifier) { device in
-                            NavigationLink(destination: ServicesView(bluetoothManager: bluetoothManager, device: device).navigationTitle("Services"), label: {
+                            NavigationLink(destination: DeviceOverview(bluetoothManager: bluetoothManager, device: device).navigationTitle(device.name ?? "Unknown").navigationBarTitleDisplayMode(.large), label: {
                                 RoundedRectangle(cornerRadius: 15)
                                     .foregroundStyle(.thinMaterial)
                                     .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
                                     .overlay {Text(device.name ?? "Unknown").font(.largeTitle).foregroundStyle(.primary)}
+                                    .overlay(alignment: .trailing, content: {Image(systemName: "chevron.right").font(.largeTitle).padding(.trailing)})
+                                    .overlay(alignment: .leading, content: {
+                                        Circle()
+                                            .frame(width: 50)
+                                            .padding(.leading)
+                                            .foregroundStyle(Color(bluetoothManager.connectedPeripheral == device ? .green : .red))
+                                        
+                                    })
                                     .scrollTransition {content, phase in content
                                             .opacity(phase.isIdentity ? 1 : 0)
                                             //.rotation3DEffect(
@@ -61,14 +69,16 @@ struct DevicesView: View {
         .popover(isPresented: $showDevicePicker, content: {
             ZStack {
                 List(bluetoothManager.discoveredPeripherals, id: \.identifier) {device in
-                    Button(action: {
-                        if !savedDevices.contains(device) {
-                            savedDevices.append(device)
-                        }
-                        showDevicePicker = false
-                    }, label: {
-                        Text(device.name ?? "Unknown")
-                    })
+                    if device.name != nil {
+                        Button(action: {
+                            if !savedDevices.contains(device) {
+                                savedDevices.append(device)
+                            }
+                            showDevicePicker = false
+                        }, label: {
+                            Text(device.name ?? "Unknown")
+                        })
+                    }
                 }
                 .onAppear(perform: bluetoothManager.startScan)
                 .onDisappear(perform: bluetoothManager.stopScan)
@@ -84,30 +94,63 @@ struct DevicesTestView: View {
     }
 }
 
-struct ServicesView: View {
-    @State var bluetoothManager: BluetoothManager
+
+
+struct DeviceOverview: View {
+    @StateObject var bluetoothManager: BluetoothManager
     @State var device: CBPeripheral
     var body: some View {
-        ZStack {
-            Rectangle()
-                .foregroundStyle(Color(.green).gradient)
-                .ignoresSafeArea()
+        ZStack{
+            Rectangle().foregroundStyle(Color(.white))
             VStack {
                 Button(action: {
-                    bluetoothManager.isConnected ? bluetoothManager.connectToDevice(device) : bluetoothManager.disconnectFromDevice(device)
+                    bluetoothManager.connectedPeripheral == device ? bluetoothManager.disconnectFromDevice(device) : bluetoothManager.connectToDevice(device)
                 }, label: {
-                    Text(bluetoothManager.isConnected ? "Disconnect" : "Connect")
+                    Capsule()
+                        .foregroundStyle(Color(bluetoothManager.connectedPeripheral == device ? .red : .green))
+                        .frame(height: 50)
+                        .overlay{Text(bluetoothManager.connectedPeripheral == device ? "Disconnect" : "Connect")}
                 })
-                //ScrollView {
-                    //List(bluetoothManager.discoveredServices, id: \.uuid) { service in                        Text(service.uuid.uuidString)
-                    //}
-                //}
+                .padding([.leading, .trailing])
+                List {
+                    if let services = device.services {
+                        ForEach(services, id: \.uuid) { service in
+                            @State var expanded = true
+                            DisclosureGroup(isExpanded: $expanded, content: {
+                                ForEach(bluetoothManager.characteristics, id: \.uuid) {characteristic in
+                                    
+                                    CharacteristicItemView(characteristic: characteristic)
+                                }
+                            }, label: {
+                                Text("Service: " + service.uuid.uuidString)
+                            })
+                        }
+                    }
+                }
+                Spacer()
             }
         }
     }
 }
 
+struct CharacteristicItemView: View {
+    @StateObject var characteristic: BluetoothCharacteristic
+    var body: some View {
+        VStack(alignment: .leading, content: {
+            TextField(text: $characteristic.label, label: {Text("User Label")})
+            Text("UUID: " + characteristic.uuid.uuidString).font(.footnote)
+            if let value = characteristic.dataValue {
+                HStack {
+                    Text("Value: ")
+                    Text(String(data: value, encoding: .utf8) ?? "Invalid Encoding")
+                    Spacer()
+                }
+            }
+        })
+    }
+}
+
 
 #Preview {
-    DevicesView()
+    ContentView()
 }

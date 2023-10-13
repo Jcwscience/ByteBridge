@@ -14,7 +14,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     @Published var connectedPeripheral: CBPeripheral?
     @Published var isConnected = false
     @Published var discoveredServices: [CBService]? = []
-    @Published var characteristicValue: Data?
+    @Published var characteristics: [BluetoothCharacteristic] = []
 
     override init() {
         super.init()
@@ -59,11 +59,9 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        guard let characteristics = service.characteristics else {
-            return
-        }
-        print(characteristics)
+        guard let characteristics = service.characteristics else { return }
         for characteristic in characteristics {
+            updateOrCreateCharacteristic(uuid: characteristic.uuid)
             if characteristic.properties.contains(.notify) {
                 peripheral.setNotifyValue(true, for: characteristic)
             }
@@ -71,9 +69,28 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        characteristicValue = characteristic.value
+        guard let value = characteristic.value else { return }
+        updateOrCreateCharacteristic(uuid: characteristic.uuid, dataValue: value)
     }
 
+    func updateOrCreateCharacteristic(uuid: CBUUID, dataValue: Data? = nil, label: String? = nil, debugValue: String? = nil) {
+        if let index = characteristics.firstIndex(where: { $0.uuid == uuid}) {
+            // Found: Update the characteristic at the found index
+            if let dataValue = dataValue {
+                characteristics[index].dataValue = dataValue
+            }
+            if let label = label {
+                characteristics[index].label = label
+            }
+            if let debugValue = debugValue {
+                characteristics[index].debugValue = debugValue
+            }
+        } else {
+            let newCharacteristic = BluetoothCharacteristic(uuid: uuid, dataValue: dataValue, label: label ?? "", debugValue: debugValue)
+            characteristics.append(newCharacteristic)
+        }
+    }
+    
     func connectToDevice(_ peripheral: CBPeripheral) {
         centralManager.connect(peripheral, options: nil)
     }
@@ -100,4 +117,18 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         // You can handle errors here or notify the user if needed
     }
 
+}
+
+class BluetoothCharacteristic: ObservableObject {
+    let uuid: CBUUID
+    @Published var dataValue: Data?
+    @Published var label: String
+    @Published var debugValue: String?
+    
+    init(uuid: CBUUID, dataValue: Data? = nil, label: String, debugValue: String? = nil) {
+        self.uuid = uuid
+        self.dataValue = dataValue
+        self.label = label
+        self.debugValue = debugValue
+    }
 }
