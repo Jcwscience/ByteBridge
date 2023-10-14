@@ -9,7 +9,8 @@ import SwiftUI
 import CoreBluetooth
 
 struct DevicesView: View {
-    @StateObject var bluetoothManager: BluetoothManager
+    @StateObject var bluetoothManager = BluetoothManager()
+    //@StateObject var bluetoothManager: BluetoothManager
     @State var showDevicePicker = false
     @State var savedDevices: [CBPeripheral] = []
     var body: some View {
@@ -17,17 +18,17 @@ struct DevicesView: View {
             ZStack {
                 //AuroraView()
                 Rectangle()
-                    .foregroundStyle(Color(.gray).gradient)
+                    .foregroundStyle(.background)
                     .ignoresSafeArea()
                 RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .foregroundStyle(.ultraThinMaterial)
+                    .foregroundStyle(.background.secondary)
                     .padding()
                 VStack {
                     Button(action: {
                         showDevicePicker = true
                     }, label: {
                         RoundedRectangle(cornerRadius: 15)
-                            .foregroundStyle(.thickMaterial)
+                            .foregroundStyle(.foreground.secondary)
                             .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
                             .overlay(alignment: .center, content: {
                                 Text("Add Device")
@@ -101,7 +102,8 @@ struct DeviceOverview: View {
     @State var device: CBPeripheral
     var body: some View {
         ZStack{
-            Rectangle().foregroundStyle(Color(.white))
+            Rectangle().foregroundStyle(Color(.gray).gradient)
+                .ignoresSafeArea()
             VStack {
                 Button(action: {
                     bluetoothManager.connectedPeripheral == device ? bluetoothManager.disconnectFromDevice(device) : bluetoothManager.connectToDevice(device)
@@ -152,5 +154,5 @@ struct CharacteristicItemView: View {
 
 
 #Preview {
-    ContentView()
+    DevicesView()
 }

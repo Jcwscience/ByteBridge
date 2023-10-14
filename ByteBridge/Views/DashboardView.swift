@@ -11,18 +11,23 @@ import CoreBluetooth
 struct DashboardView: View {
     @StateObject var bluetoothManager: BluetoothManager
     @State var activeWidgets: [WidgetConfig] = []
-    let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+    let columns = [GridItem(.flexible()), GridItem(.flexible())]
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns) {
-                Button(action: {
-                    let newWidget = WidgetConfig()
-                    activeWidgets.append(newWidget)
-                }, label: {
-                    AddWidgetView()
-                })
-                ForEach(activeWidgets, id: \.uuid) { config in
-                    TestWidgetView()
+        ZStack {
+            Rectangle()
+                .foregroundStyle(Color(.gray).gradient)
+                .ignoresSafeArea()
+            ScrollView {
+                LazyVGrid(columns: columns) {
+                    Button(action: {
+                        let newWidget = WidgetConfig()
+                        activeWidgets.append(newWidget)
+                    }, label: {
+                        AddWidgetView()
+                    })
+                    ForEach(activeWidgets, id: \.uuid) { config in
+                        TestWidgetView()
+                    }
                 }
             }
         }
@@ -37,7 +42,7 @@ struct AddWidgetView: View {
                 Image(systemName: "plus.app.fill")
                     .font(.largeTitle)
             })
-            .frame(width: 100, height: 100)
+            .frame(width: 150, height: 150)
     }
 }
 
@@ -49,7 +54,7 @@ struct TestWidgetView: View {
             .overlay(content: {
                 GaugeView(value: 0.5)
             })
-            .frame(width: 100, height: 100)
+            .frame(width: 150, height: 150)
     }
 }
 
@@ -64,7 +69,7 @@ struct WidgetView: View {
             .overlay(content: {
                 GaugeView(value: (Double(String(data: value, encoding: .utf8) ?? "0") ?? 0.0) / 100)
             })
-            .frame(width: 100, height: 100)
+            .frame(width: 150, height: 150)
     }
 }
 
