@@ -39,6 +39,7 @@
 		52A605872AC4DEA700BDEF11 /* Widgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
 		F940C4AC2ACF87E000BDC25B /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		F952C25C2ACF483A00BED45E /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		F9662EBD2ADB49510023091A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +72,7 @@
 		522BA9C52AC30B260041834E /* ByteBridge */ = {
 			isa = PBXGroup;
 			children = (
+				F9662EBD2ADB49510023091A /* Info.plist */,
 				523987052AC619C400889B9C /* Views */,
 				522BA9C62AC30B260041834E /* ByteBridgeApp.swift */,
 				522BA9C82AC30B260041834E /* ContentView.swift */,
@@ -327,6 +329,7 @@
 				DEVELOPMENT_TEAM = Q7ZQ9RBJXD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ByteBridge/Info.plist;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Needed to access devices";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Needed to access devices";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -358,6 +361,7 @@
 				DEVELOPMENT_TEAM = Q7ZQ9RBJXD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ByteBridge/Info.plist;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Needed to access devices";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Needed to access devices";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

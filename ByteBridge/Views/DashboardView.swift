@@ -15,7 +15,7 @@ struct DashboardView: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .foregroundStyle(Color(.gray).gradient)
+                .foregroundStyle(.background.secondary)
                 .ignoresSafeArea()
             ScrollView {
                 LazyVGrid(columns: columns) {

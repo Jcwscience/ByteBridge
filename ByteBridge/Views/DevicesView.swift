@@ -9,8 +9,8 @@ import SwiftUI
 import CoreBluetooth
 
 struct DevicesView: View {
-    @StateObject var bluetoothManager = BluetoothManager()
-    //@StateObject var bluetoothManager: BluetoothManager
+    //@StateObject var bluetoothManager = BluetoothManager()
+    @StateObject var bluetoothManager: BluetoothManager
     @State var showDevicePicker = false
     @State var savedDevices: [CBPeripheral] = []
     var body: some View {
@@ -20,69 +20,68 @@ struct DevicesView: View {
                 Rectangle()
                     .foregroundStyle(.background)
                     .ignoresSafeArea()
-                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                RoundedRectangle(cornerRadius: 15, style: .circular)
                     .foregroundStyle(.background.secondary)
                     .padding()
                 VStack {
                     Button(action: {
                         showDevicePicker = true
                     }, label: {
-                        RoundedRectangle(cornerRadius: 15)
-                            .foregroundStyle(.foreground.secondary)
+                        RoundedRectangle(cornerRadius: 15, style: .circular)
+                            .foregroundStyle(Color(.systemFill))
                             .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
-                            .overlay(alignment: .center, content: {
+                            .overlay {
                                 Text("Add Device")
                                     .font(.largeTitle)
-                            })
-                            .padding([.leading, .trailing, .top], 40)
+                            }
+                            .padding([.top, .leading, .trailing], 40)
                     })
-                    ScrollView {
-                        ForEach(savedDevices, id: \.identifier) { device in
-                            NavigationLink(destination: DeviceOverview(bluetoothManager: bluetoothManager, device: device).navigationTitle(device.name ?? "Unknown").navigationBarTitleDisplayMode(.large), label: {
-                                RoundedRectangle(cornerRadius: 15)
-                                    .foregroundStyle(.thinMaterial)
-                                    .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
-                                    .overlay {Text(device.name ?? "Unknown").font(.largeTitle).foregroundStyle(.primary)}
-                                    .overlay(alignment: .trailing, content: {Image(systemName: "chevron.right").font(.largeTitle).padding(.trailing)})
-                                    .overlay(alignment: .leading, content: {
-                                        Circle()
-                                            .frame(width: 50)
-                                            .padding(.leading)
-                                            .foregroundStyle(Color(bluetoothManager.connectedPeripheral == device ? .green : .red))
-                                        
-                                    })
-                                    .scrollTransition {content, phase in content
-                                            .opacity(phase.isIdentity ? 1 : 0)
-                                            //.rotation3DEffect(
-                                            //    .degrees(phase.value * -90),axis: (x: 1.0, y: 0.0, z: 0.0), anchor: phase.value < 0 ? .bottom : .top
-                                            //)
-                                            //.offset(y: phase.value * -50)
-                                    }
-                            })
-                            .scrollTargetLayout()
+                    ForEach(savedDevices, id: \.identifier) { device in
+                        if let name = device.name {
+                            RoundedRectangle(cornerRadius: 15, style: .circular)
+                                .foregroundStyle(Color(.systemFill))
+                                .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                                .overlay {
+                                    Text(name)
+                                        .font(.largeTitle)
+                                }
+                                .padding([.leading, .trailing], 40)
                         }
                     }
-                    .scrollTargetBehavior(.viewAligned)
-                    .padding([.leading, .trailing, .bottom], 40)
+                    Spacer()
                 }
             }
         }
         .popover(isPresented: $showDevicePicker, content: {
             ZStack {
-                List(bluetoothManager.discoveredPeripherals, id: \.identifier) {device in
-                    if device.name != nil {
-                        Button(action: {
-                            if !savedDevices.contains(device) {
-                                savedDevices.append(device)
-                            }
-                            showDevicePicker = false
-                        }, label: {
-                            Text(device.name ?? "Unknown")
-                        })
+                Rectangle()
+                    .foregroundStyle(.background.secondary)
+                    .ignoresSafeArea()
+                    .onAppear(perform: {
+                        bluetoothManager.startScan()
+                    })
+                    .onDisappear(perform: {
+                        bluetoothManager.stopScan()
+                    })
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button("Cancel", action: {showDevicePicker = false}).font(.headline)
+                            .padding([.trailing, .top], 30)
+                    }
+                    List(bluetoothManager.discoveredPeripherals, id: \.identifier) { device in
+                        if let name = device.name {
+                            Button(action: {
+                                if !savedDevices.contains(device) {
+                                    savedDevices.append(device)
+                                }
+                                showDevicePicker = false
+                            }, label: {
+                                Text(name)
+                            })
+                        }
                     }
                 }
-                .onAppear(perform: bluetoothManager.startScan)
-                .onDisappear(perform: bluetoothManager.stopScan)
             }
         })
     }
@@ -154,5 +153,5 @@ struct CharacteristicItemView: View {
 
 
 #Preview {
-    DevicesView()
+    ContentView()
 }
