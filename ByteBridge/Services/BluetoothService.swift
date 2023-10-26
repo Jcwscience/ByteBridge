@@ -38,6 +38,7 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         delegate?.didConnectToDevice(peripheral)
+        peripheral.discoverServices(nil)
     }
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {

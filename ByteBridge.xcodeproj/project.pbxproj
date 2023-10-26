@@ -12,8 +12,8 @@
 		522BA9CB2AC30B270041834E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 522BA9CA2AC30B270041834E /* Assets.xcassets */; };
 		522BA9CE2AC30B270041834E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 522BA9CD2AC30B270041834E /* Preview Assets.xcassets */; };
 		5239870D2AC6220C00889B9C /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5239870C2AC6220C00889B9C /* Colors.xcassets */; };
-		F9F891692AEA8E1C0056FE50 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F891682AEA8E1C0056FE50 /* Device.swift */; };
-		F9F8916B2AEA8E3C0056FE50 /* Characteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F8916A2AEA8E3C0056FE50 /* Characteristic.swift */; };
+		F9F891692AEA8E1C0056FE50 /* BTDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F891682AEA8E1C0056FE50 /* BTDevice.swift */; };
+		F9F8916B2AEA8E3C0056FE50 /* BTCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F8916A2AEA8E3C0056FE50 /* BTCharacteristic.swift */; };
 		F9F8916D2AEA8E4C0056FE50 /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F8916C2AEA8E4C0056FE50 /* Widget.swift */; };
 		F9F8916F2AEA8E670056FE50 /* DevicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F8916E2AEA8E670056FE50 /* DevicesViewModel.swift */; };
 		F9F891712AEA8E800056FE50 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F891702AEA8E800056FE50 /* DashboardViewModel.swift */; };
@@ -26,7 +26,7 @@
 		F9F891842AEA8FB20056FE50 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F891832AEA8FB20056FE50 /* SettingsView.swift */; };
 		F9F891862AEA91DE0056FE50 /* BluetoothService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F891852AEA91DE0056FE50 /* BluetoothService.swift */; };
 		F9F891882AEA91EF0056FE50 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F891872AEA91EF0056FE50 /* DataService.swift */; };
-		F9F8918A2AEAB98E0056FE50 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F891892AEAB98E0056FE50 /* Service.swift */; };
+		F9F8918A2AEAB98E0056FE50 /* BTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F891892AEAB98E0056FE50 /* BTService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,8 +37,8 @@
 		522BA9CD2AC30B270041834E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5239870C2AC6220C00889B9C /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		F9662EBD2ADB49510023091A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		F9F891682AEA8E1C0056FE50 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
-		F9F8916A2AEA8E3C0056FE50 /* Characteristic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Characteristic.swift; sourceTree = "<group>"; };
+		F9F891682AEA8E1C0056FE50 /* BTDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDevice.swift; sourceTree = "<group>"; };
+		F9F8916A2AEA8E3C0056FE50 /* BTCharacteristic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCharacteristic.swift; sourceTree = "<group>"; };
 		F9F8916C2AEA8E4C0056FE50 /* Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widget.swift; sourceTree = "<group>"; };
 		F9F8916E2AEA8E670056FE50 /* DevicesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewModel.swift; sourceTree = "<group>"; };
 		F9F891702AEA8E800056FE50 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
@@ -51,7 +51,7 @@
 		F9F891832AEA8FB20056FE50 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F9F891852AEA91DE0056FE50 /* BluetoothService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothService.swift; sourceTree = "<group>"; };
 		F9F891872AEA91EF0056FE50 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
-		F9F891892AEAB98E0056FE50 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		F9F891892AEAB98E0056FE50 /* BTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,10 +109,10 @@
 		F9F891642AEA8D750056FE50 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F9F891682AEA8E1C0056FE50 /* Device.swift */,
-				F9F8916A2AEA8E3C0056FE50 /* Characteristic.swift */,
+				F9F891682AEA8E1C0056FE50 /* BTDevice.swift */,
+				F9F8916A2AEA8E3C0056FE50 /* BTCharacteristic.swift */,
 				F9F8916C2AEA8E4C0056FE50 /* Widget.swift */,
-				F9F891892AEAB98E0056FE50 /* Service.swift */,
+				F9F891892AEAB98E0056FE50 /* BTService.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -250,7 +250,7 @@
 			files = (
 				F9F891842AEA8FB20056FE50 /* SettingsView.swift in Sources */,
 				F9F8916F2AEA8E670056FE50 /* DevicesViewModel.swift in Sources */,
-				F9F891692AEA8E1C0056FE50 /* Device.swift in Sources */,
+				F9F891692AEA8E1C0056FE50 /* BTDevice.swift in Sources */,
 				F9F891782AEA8EF30056FE50 /* DevicesView.swift in Sources */,
 				F9F891862AEA91DE0056FE50 /* BluetoothService.swift in Sources */,
 				522BA9C92AC30B260041834E /* ContentView.swift in Sources */,
@@ -259,8 +259,8 @@
 				F9F8917F2AEA8F7C0056FE50 /* WidgetView.swift in Sources */,
 				F9F891812AEA8F970056FE50 /* DialView.swift in Sources */,
 				F9F891732AEA8E960056FE50 /* SettingsViewModel.swift in Sources */,
-				F9F8918A2AEAB98E0056FE50 /* Service.swift in Sources */,
-				F9F8916B2AEA8E3C0056FE50 /* Characteristic.swift in Sources */,
+				F9F8918A2AEAB98E0056FE50 /* BTService.swift in Sources */,
+				F9F8916B2AEA8E3C0056FE50 /* BTCharacteristic.swift in Sources */,
 				522BA9C72AC30B260041834E /* ByteBridgeApp.swift in Sources */,
 				F9F8917D2AEA8F6B0056FE50 /* DashboardView.swift in Sources */,
 				F9F8916D2AEA8E4C0056FE50 /* Widget.swift in Sources */,

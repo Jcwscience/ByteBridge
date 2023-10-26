@@ -25,9 +25,9 @@ struct DeviceDetailsView: View {
                     }
                     .frame(height: 50)
             })
-            if let wrappedDevice = viewModel.connectedDevices.first(where: {$0.id == device.identifier}) {
-                ForEach(wrappedDevice.services) { service in
-                    ServiceView(service: service)
+            if let device = viewModel.connectedDevices.first(where: {$0.id == device.identifier}) {
+                ForEach(device.services) { service in
+                    Text(service.id.uuidString)
                 }
             }
             Spacer()
@@ -37,7 +37,7 @@ struct DeviceDetailsView: View {
 }
 
 struct ServiceView: View {
-    @StateObject var service: Service
+    @StateObject var service: BTService
     var body: some View {
         VStack {
             Text(service.id.uuidString)

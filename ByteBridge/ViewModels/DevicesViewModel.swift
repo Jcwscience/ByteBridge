@@ -11,7 +11,7 @@ import CoreBluetooth
 class DevicesViewModel: ObservableObject {
     @Published var devices: [CBPeripheral] = []
     @Published var savedDevices: [CBPeripheral] = []
-    @Published var connectedDevices: [Device] = []
+    @Published var connectedDevices: [BTDevice] = []
     @Published var isScanning: Bool = false
 
     private let bluetoothService = BluetoothService()
@@ -53,9 +53,8 @@ class DevicesViewModel: ObservableObject {
 extension DevicesViewModel: BluetoothServiceDelegate {
     func didConnectToDevice(_ device: CBPeripheral) {
         if !connectedDevices.contains(where: { $0.id == device.identifier }) {
-            let wrappedDevice = Device(id: device.identifier)
-            connectedDevices.append(wrappedDevice)
-            device.discoverServices()
+            let btDevice = BTDevice(id: device.identifier, name: device.name ?? "Unknown")
+            connectedDevices.append(btDevice)
         }
     }
     
@@ -76,13 +75,12 @@ extension DevicesViewModel: BluetoothServiceDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        print(peripheral.services)
         if let index = connectedDevices.firstIndex(where: {$0.id == peripheral.identifier}) {
             if let discoveredServices = peripheral.services {
                 print(discoveredServices)
-                var services:[Service] = []
+                var services:[BTService] = []
                 for discoveredService in discoveredServices {
-                    let service = Service(id: discoveredService.uuid, primary: discoveredService.isPrimary)
+                    let service = BTService(id: discoveredService.uuid, primary: discoveredService.isPrimary)
                     services.append(service)
                 }
                 connectedDevices[index].services = services
