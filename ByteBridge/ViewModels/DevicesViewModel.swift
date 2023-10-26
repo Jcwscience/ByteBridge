@@ -55,7 +55,7 @@ extension DevicesViewModel: BluetoothServiceDelegate {
         if !connectedDevices.contains(where: { $0.id == device.identifier }) {
             let wrappedDevice = Device(id: device.identifier)
             connectedDevices.append(wrappedDevice)
-            device.discoverServices([])
+            device.discoverServices()
         }
     }
     
@@ -76,6 +76,7 @@ extension DevicesViewModel: BluetoothServiceDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        print(peripheral.services)
         if let index = connectedDevices.firstIndex(where: {$0.id == peripheral.identifier}) {
             if let discoveredServices = peripheral.services {
                 print(discoveredServices)
