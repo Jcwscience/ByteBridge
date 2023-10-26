@@ -10,7 +10,6 @@ import CoreBluetooth
 
 struct DashboardView: View {
     @StateObject var bluetoothManager: BluetoothManager
-    @State var activeWidgets: [WidgetConfig] = []
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
     var body: some View {
         ZStack {
@@ -20,14 +19,10 @@ struct DashboardView: View {
             ScrollView {
                 LazyVGrid(columns: columns) {
                     Button(action: {
-                        let newWidget = WidgetConfig()
-                        activeWidgets.append(newWidget)
+
                     }, label: {
                         AddWidgetView()
                     })
-                    ForEach(activeWidgets, id: \.uuid) { config in
-                        TestWidgetView()
-                    }
                 }
             }
         }
@@ -74,6 +69,7 @@ struct WidgetView: View {
 }
 
 
+/*
 class WidgetConfig: ObservableObject {
     let uuid: UUID
     @Published var dataSource: BluetoothCharacteristic?
@@ -83,7 +79,7 @@ class WidgetConfig: ObservableObject {
         self.dataSource = dataSource
     }
 }
-
+*/
 
 
 #Preview {

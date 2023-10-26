@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreBluetooth
 
-struct DevicesView: View {
+struct OldDevicesView: View {
     //@StateObject var bluetoothManager = BluetoothManager()
     @StateObject var bluetoothManager: BluetoothManager
     @State var showDevicePicker = false
@@ -37,22 +37,17 @@ struct DevicesView: View {
                             .padding([.top, .leading, .trailing], 40)
                     })
                     ForEach(savedDevices, id: \.identifier) { device in
-                        if let name = device.name {
-                            RoundedRectangle(cornerRadius: 15, style: .circular)
-                                .foregroundStyle(Color(.systemFill))
-                                .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
-                                .overlay {
-                                    Text(name)
-                                        .font(.largeTitle)
-                                }
-                                .padding([.leading, .trailing], 40)
-                        }
+                        NavigationLink(destination: {
+                            DeviceOverview(bluetoothManager: bluetoothManager, device: device).navigationTitle(device.name ?? "Unknown")
+                        }, label: {
+                            Text(device.name ?? "Unknown")
+                        })
                     }
                     Spacer()
                 }
             }
         }
-        .popover(isPresented: $showDevicePicker, content: {
+        .sheet(isPresented: $showDevicePicker, content: {
             ZStack {
                 Rectangle()
                     .foregroundStyle(.background.secondary)
@@ -100,52 +95,37 @@ struct DeviceOverview: View {
     @StateObject var bluetoothManager: BluetoothManager
     @State var device: CBPeripheral
     var body: some View {
-        ZStack{
-            Rectangle().foregroundStyle(Color(.gray).gradient)
-                .ignoresSafeArea()
-            VStack {
-                Button(action: {
-                    bluetoothManager.connectedPeripheral == device ? bluetoothManager.disconnectFromDevice(device) : bluetoothManager.connectToDevice(device)
-                }, label: {
-                    Capsule()
-                        .foregroundStyle(Color(bluetoothManager.connectedPeripheral == device ? .red : .green))
-                        .frame(height: 50)
-                        .overlay{Text(bluetoothManager.connectedPeripheral == device ? "Disconnect" : "Connect")}
-                })
-                .padding([.leading, .trailing])
-                List {
-                    if let services = device.services {
-                        ForEach(services, id: \.uuid) { service in
-                            @State var expanded = true
-                            DisclosureGroup(isExpanded: $expanded, content: {
-                                ForEach(bluetoothManager.characteristics, id: \.uuid) {characteristic in
-                                    
-                                    CharacteristicItemView(characteristic: characteristic)
-                                }
-                            }, label: {
-                                Text("Service: " + service.uuid.uuidString)
-                            })
-                        }
+        NavigationStack {
+            ZStack{
+                Rectangle().foregroundStyle(Color(.gray).gradient)
+                    .ignoresSafeArea()
+                VStack {
+                    Button(action: {
+                        bluetoothManager.connectedPeripheral == device ? bluetoothManager.disconnectFromDevice(device) : bluetoothManager.connectToDevice(device)
+                    }, label: {
+                        Capsule()
+                            .foregroundStyle(Color(bluetoothManager.connectedPeripheral == device ? .red : .green))
+                            .frame(height: 50)
+                            .overlay{Text(bluetoothManager.connectedPeripheral == device ? "Disconnect" : "Connect")}
+                    })
+                    .padding([.leading, .trailing])
+                    ForEach(bluetoothManager.discoveredCharacteristics) {char in
+                        CharacteristicItemView(characteristic: char)
                     }
+                    Spacer()
                 }
-                Spacer()
             }
         }
     }
 }
 
 struct CharacteristicItemView: View {
-    @StateObject var characteristic: BluetoothCharacteristic
+    @StateObject var characteristic: CharacteristicWrapper
     var body: some View {
         VStack(alignment: .leading, content: {
-            TextField(text: $characteristic.label, label: {Text("User Label")})
-            Text("UUID: " + characteristic.uuid.uuidString).font(.footnote)
-            if let value = characteristic.dataValue {
-                HStack {
-                    Text("Value: ")
-                    Text(String(data: value, encoding: .utf8) ?? "Invalid Encoding")
-                    Spacer()
-                }
+            Text("UUID: " + characteristic.id.uuidString).font(.footnote)
+            if let value = characteristic.value {
+                Text("Value: " + value)
             }
         })
     }

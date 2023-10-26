@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct GaugeView: View {
+struct OldGaugeView: View {
     var value: Double  // This will be in the range [0, 1], where 0 is the minimum, and 1 is the maximum
     
     var body: some View {
@@ -28,7 +28,7 @@ struct GaugeView: View {
     }
 }
 
-struct WidgetPreview: View {
+struct OldWidgetPreview: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 25.0)
             .foregroundStyle(Color(.red).gradient)
@@ -39,6 +39,3 @@ struct WidgetPreview: View {
     }
 }
 
-#Preview {
-    WidgetPreview()
-}

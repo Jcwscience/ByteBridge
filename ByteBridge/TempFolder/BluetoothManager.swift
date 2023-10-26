@@ -8,13 +8,40 @@
 import Foundation
 import CoreBluetooth
 
+class DataSource: ObservableObject, Identifiable {
+    let id: CBUUID
+    @Published var label: String
+    @Published var value: String
+    
+    init(id:CBUUID, label:String = "", value:String) {
+        self.id = id
+        self.label = label
+        self.value = value
+    }
+}
+
+
+class CharacteristicWrapper: ObservableObject, Identifiable {
+    let parentServiceUUID: CBUUID
+    let id: CBUUID
+    var value: String?
+    
+    init(parentServiceUUID:CBUUID, id:CBUUID, value:String? = nil) {
+        self.parentServiceUUID = parentServiceUUID
+        self.id = id
+        self.value = value
+    }
+}
+
+
 class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, ObservableObject {
     var centralManager: CBCentralManager!
     @Published var discoveredPeripherals: [CBPeripheral] = []
     @Published var connectedPeripheral: CBPeripheral?
     @Published var isConnected = false
     @Published var discoveredServices: [CBService]? = []
-    @Published var characteristics: [BluetoothCharacteristic] = []
+    @Published var discoveredCharacteristics: [CharacteristicWrapper] = []
+    @Published var dataSources: [DataSource] = []
 
     override init() {
         super.init()
@@ -61,18 +88,37 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
         for characteristic in characteristics {
-            updateOrCreateCharacteristic(uuid: characteristic.uuid)
             if characteristic.properties.contains(.notify) {
                 peripheral.setNotifyValue(true, for: characteristic)
+            }
+            if !discoveredCharacteristics.contains(where: {$0.id == characteristic.uuid}) {
+                if let value:Data = characteristic.value {
+                    if let stringValue:String = String(data: value, encoding: .utf8) {
+                        let newCharacteristic:CharacteristicWrapper = CharacteristicWrapper(parentServiceUUID: service.uuid, id: characteristic.uuid, value: stringValue)
+                        discoveredCharacteristics.append(newCharacteristic)
+                    }
+                } else {
+                    let newCharacteristic:CharacteristicWrapper = CharacteristicWrapper(parentServiceUUID: service.uuid, id: characteristic.uuid)
+                    discoveredCharacteristics.append(newCharacteristic)
+                }
             }
         }
     }
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         guard let value = characteristic.value else { return }
-        updateOrCreateCharacteristic(uuid: characteristic.uuid, dataValue: value)
+        guard let stringValue = String(data: value, encoding: .utf8) else { return }
+        
+        if let index = discoveredCharacteristics.firstIndex(where: {$0.id == characteristic.uuid}) {
+            discoveredCharacteristics[index].value = stringValue
+        }
+        
+        if let index = dataSources.firstIndex(where: {$0.id == characteristic.uuid}) {
+            dataSources[index].value = stringValue
+        }
     }
 
+    /*
     func updateOrCreateCharacteristic(uuid: CBUUID, dataValue: Data? = nil, label: String? = nil, debugValue: String? = nil) {
         if let index = characteristics.firstIndex(where: { $0.uuid == uuid}) {
             // Found: Update the characteristic at the found index
@@ -90,7 +136,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             characteristics.append(newCharacteristic)
         }
     }
-    
+    */
     func connectToDevice(_ peripheral: CBPeripheral) {
         centralManager.connect(peripheral, options: nil)
     }
@@ -117,18 +163,4 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         // You can handle errors here or notify the user if needed
     }
 
-}
-
-class BluetoothCharacteristic: ObservableObject {
-    let uuid: CBUUID
-    @Published var dataValue: Data?
-    @Published var label: String
-    @Published var debugValue: String?
-    
-    init(uuid: CBUUID, dataValue: Data? = nil, label: String, debugValue: String? = nil) {
-        self.uuid = uuid
-        self.dataValue = dataValue
-        self.label = label
-        self.debugValue = debugValue
-    }
 }

@@ -8,20 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var bluetoothManager = BluetoothManager()
     @State var selection = 1
+    let devicesViewModel = DevicesViewModel()
     var body: some View {
-        
         NavigationStack {
             TabView(selection: $selection) {
                 Group {
-                    DevicesView(bluetoothManager: bluetoothManager)
+                    DevicesView(viewModel: devicesViewModel)
                     .tabItem {
                         Image(systemName: "cpu")
                         Text("Devices")
                     }.tag(1)
 
-                    DashboardView(bluetoothManager: bluetoothManager)
+                    DashboardView()
                         .tabItem {
                             Image(systemName: "gauge.with.dots.needle.bottom.100percent")
                             Text("Dashboard")
