@@ -23,9 +23,20 @@ struct DevicesView: View {
                         }
                         .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
                 })
-                List(viewModel.savedDevices, id: \.identifier) { device in
+                ForEach(viewModel.savedDevices, id: \.identifier) { device in
                     NavigationLink(destination: DeviceDetailsView(viewModel: viewModel, device: device).navigationTitle(device.name ?? "Unknown"), label: {
-                        Text(device.name ?? "Unknown")
+                        ScrollView {
+                            RoundedRectangle(cornerRadius: 20, style: .circular)
+                                .foregroundStyle(.fill)
+                                .overlay {
+                                    Text(device.name ?? "Unknown").font(.title)
+                                }
+                                .overlay(alignment: .trailing, content: {
+                                    Image(systemName: "chevron.right").font(.title)
+                                        .padding(.trailing)
+                                })
+                                .frame(height: 100)
+                        }
                     })
                 }
                 Spacer()

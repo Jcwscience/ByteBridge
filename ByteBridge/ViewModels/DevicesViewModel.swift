@@ -8,7 +8,7 @@
 import Foundation
 import CoreBluetooth
 
-class DevicesViewModel: ObservableObject {
+class DevicesViewModel: ObservableObject, BluetoothServiceDelegate {
     @Published var devices: [CBPeripheral] = []
     @Published var savedDevices: [CBPeripheral] = []
     @Published var connectedDevices: [BTDevice] = []
@@ -17,7 +17,7 @@ class DevicesViewModel: ObservableObject {
     private let bluetoothService = BluetoothService()
 
     init() {
-        bluetoothService.delegate = self // Assuming you have a delegate or similar mechanism to update the ViewModel
+        bluetoothService.delegate = self
         //self.savedDevices = DataService.loadSavedDevices()
     }
 
@@ -40,17 +40,15 @@ class DevicesViewModel: ObservableObject {
         bluetoothService.disconnect(device)
     }
     
-    
     func saveDevice(_ device: CBPeripheral) {
         if !savedDevices.contains(where: { $0.identifier == device.identifier }) {
             savedDevices.append(device)
             //DataService.saveDevice(device)
         }
     }
-}
 
-// Delegate or similar mechanism to update the ViewModel based on Bluetooth events
-extension DevicesViewModel: BluetoothServiceDelegate {
+    // Delegate methods
+
     func didConnectToDevice(_ device: CBPeripheral) {
         if !connectedDevices.contains(where: { $0.id == device.identifier }) {
             let btDevice = BTDevice(id: device.identifier, name: device.name ?? "Unknown")
@@ -74,17 +72,10 @@ extension DevicesViewModel: BluetoothServiceDelegate {
         }
     }
     
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        if let index = connectedDevices.firstIndex(where: {$0.id == peripheral.identifier}) {
-            if let discoveredServices = peripheral.services {
-                print(discoveredServices)
-                var services:[BTService] = []
-                for discoveredService in discoveredServices {
-                    let service = BTService(id: discoveredService.uuid, primary: discoveredService.isPrimary)
-                    services.append(service)
-                }
-                connectedDevices[index].services = services
-            }
+    func didDiscoverServices(for device: CBPeripheral, services: [BTService]) {
+        if let index = connectedDevices.firstIndex(where: { $0.id == device.identifier }) {
+            connectedDevices[index].services = services
         }
     }
 }
+

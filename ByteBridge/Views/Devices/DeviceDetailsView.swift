@@ -27,7 +27,7 @@ struct DeviceDetailsView: View {
             })
             if let device = viewModel.connectedDevices.first(where: {$0.id == device.identifier}) {
                 ForEach(device.services) { service in
-                    Text(service.id.uuidString)
+                    ServiceView(service: service)
                 }
             }
             Spacer()

@@ -12,6 +12,7 @@ protocol BluetoothServiceDelegate: AnyObject {
     func didUpdateState(_ state: CBManagerState)
     func didConnectToDevice(_ device: CBPeripheral)
     func didDisconnectFromDevice(_ device: CBPeripheral, error: Error?)
+    func didDiscoverServices(for device: CBPeripheral, services: [BTService])
 }
 
 class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
@@ -38,6 +39,7 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         delegate?.didConnectToDevice(peripheral)
+        peripheral.delegate = self
         peripheral.discoverServices(nil)
     }
 
@@ -67,5 +69,16 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     
     // MARK: - CBPeripheralDelegate
-    // Handle the delegate methods for the peripheral as needed, e.g., discovering services, characteristics, etc.
+
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        if let discoveredServices = peripheral.services {
+            var services: [BTService] = []
+            for service in discoveredServices {
+                let btService = BTService(id: service.uuid, primary: service.isPrimary)
+                services.append(btService)
+            }
+            delegate?.didDiscoverServices(for: peripheral, services: services)
+        }
+    }
 }
+

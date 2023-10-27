@@ -34,10 +34,6 @@ struct ContentView: View {
                 }
                 .toolbarBackground(.visible, for: .tabBar)
                 .toolbarBackground(Color(.secondarySystemFill), for: .tabBar)
-                //.background(content: {
-                //    AuroraView()
-                //        .ignoresSafeArea()
-                //})
             }
         }
     }
