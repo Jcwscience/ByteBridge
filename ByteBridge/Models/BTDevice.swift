@@ -11,7 +11,7 @@ import CoreBluetooth
 class BTDevice: ObservableObject, Identifiable {
     let id: UUID
     let name: String
-    
+    //WHY IS THIS NOT WORKING!!??
     @Published var services:[BTService]
     
     init(id: UUID, name: String, services: [BTService] = []) {

@@ -37,7 +37,7 @@ struct DeviceDetailsView: View {
 }
 
 struct ServiceView: View {
-    @StateObject var service: BTService
+    @State var service: BTService
     var body: some View {
         VStack {
             Text(service.id.uuidString)
