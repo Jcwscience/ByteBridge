@@ -11,6 +11,7 @@ import CoreBluetooth
 struct DeviceDetailsView: View {
     @ObservedObject var viewModel: DevicesViewModel
     var device: CBPeripheral
+    @State private var deviceServices: [BTService] = []
 
     var body: some View {
         VStack {
@@ -25,10 +26,8 @@ struct DeviceDetailsView: View {
                     }
                     .frame(height: 50)
             })
-            if let device = viewModel.connectedDevices.first(where: {$0.id == device.identifier}) {
-                ForEach(device.services) { service in
-                    ServiceView(service: service)
-                }
+            ForEach(deviceServices) { service in
+                ServiceView(service: service)
             }
             Spacer()
         }
