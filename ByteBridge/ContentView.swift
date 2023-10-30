@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
     @State var selection = 1
-    let devicesViewModel = DevicesViewModel()
+    let devicesController = DevicesController()
     var body: some View {
         NavigationStack {
             TabView(selection: $selection) {
                 Group {
-                    DevicesView(viewModel: devicesViewModel)
+                    DevicesView(controller: devicesController)
                     .tabItem {
                         Image(systemName: "cpu")
                         Text("Devices")

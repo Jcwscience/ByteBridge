@@ -9,19 +9,19 @@ import SwiftUI
 import CoreBluetooth
 
 struct DeviceDetailsView: View {
-    @ObservedObject var viewModel: DevicesViewModel
+    @ObservedObject var controller: DevicesController
     var device: CBPeripheral
     @State private var deviceServices: [BTService] = []
 
     var body: some View {
         VStack {
             Button(action: {
-                viewModel.connectedDevices.contains(where: {$0.id == device.identifier}) ? viewModel.disconnectFromDevice(device) : viewModel.connectToDevice(device)
+                controller.connectedDevices.contains(where: {$0.id == device.identifier}) ? controller.disconnectFromDevice(device) : controller.connectToDevice(device)
             }, label: {
                 Capsule(style: .circular)
-                    .foregroundStyle(Color(viewModel.connectedDevices.contains(where: {$0.id == device.identifier}) ? .red : .green).gradient)
+                    .foregroundStyle(Color(controller.connectedDevices.contains(where: {$0.id == device.identifier}) ? .red : .green).gradient)
                     .overlay {
-                        Text(viewModel.connectedDevices.contains(where: {$0.id == device.identifier}) ? "Disconnect" : "Connect")
+                        Text(controller.connectedDevices.contains(where: {$0.id == device.identifier}) ? "Disconnect" : "Connect")
                             .foregroundStyle(.foreground)
                     }
                     .frame(height: 50)

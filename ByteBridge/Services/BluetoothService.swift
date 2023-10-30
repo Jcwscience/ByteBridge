@@ -7,6 +7,7 @@
 
 import CoreBluetooth
 
+// Protocol to delegate Bluetooth-related events to the controller.
 protocol BluetoothServiceDelegate: AnyObject {
     func didDiscoverDevice(_ device: CBPeripheral)
     func didUpdateState(_ state: CBManagerState)
@@ -16,10 +17,8 @@ protocol BluetoothServiceDelegate: AnyObject {
 }
 
 class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
-    
     private var centralManager: CBCentralManager?
     private var connectedPeripheral: CBPeripheral?
-    
     weak var delegate: BluetoothServiceDelegate?
 
     override init() {

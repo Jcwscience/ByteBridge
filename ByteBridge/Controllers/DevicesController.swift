@@ -1,14 +1,14 @@
 //
-//  DevicesViewModel.swift
+//  DevicesController.swift
 //  ByteBridge
 //
-//  Created by John Wallace on 10/26/23.
+//  Created by John Wallace on 10/30/23.
 //
 
 import Foundation
 import CoreBluetooth
 
-class DevicesViewModel: ObservableObject, BluetoothServiceDelegate {
+class DevicesController: BluetoothServiceDelegate, ObservableObject {
     @Published var devices: [CBPeripheral] = []
     @Published var savedDevices: [CBPeripheral] = []
     @Published var connectedDevices: [BTDevice] = []

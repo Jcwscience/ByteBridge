@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DevicesView: View {
-    @ObservedObject var viewModel: DevicesViewModel
+    @ObservedObject var controller: DevicesController
     @State var isPickerShown = false
     var body: some View {
         NavigationStack {
@@ -23,22 +23,24 @@ struct DevicesView: View {
                         }
                         .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
                 })
-                ForEach(viewModel.savedDevices, id: \.identifier) { device in
-                    NavigationLink(destination: DeviceDetailsView(viewModel: viewModel, device: device).navigationTitle(device.name ?? "Unknown"), label: {
-                        ScrollView {
-                            RoundedRectangle(cornerRadius: 20, style: .circular)
-                                .foregroundStyle(.fill)
-                                .overlay {
-                                    Text(device.name ?? "Unknown").font(.title)
-                                }
-                                .overlay(alignment: .trailing, content: {
-                                    Image(systemName: "chevron.right").font(.title)
-                                        .padding(.trailing)
-                                })
-                                .frame(height: 100)
-                        }
-                    })
+                ScrollView {
+                    ForEach(controller.savedDevices, id: \.identifier) { device in
+                        RoundedRectangle(cornerRadius: 20, style: .circular)
+                            .foregroundStyle(.fill)
+                            .overlay {
+                                Text(device.name ?? "Unknown").font(.title)
+                            }
+                            .overlay(alignment: .trailing, content: {
+                                Image(systemName: "chevron.right").font(.title)
+                                    .padding(.trailing)
+                            })
+                            .frame(height: 100)
+                    }
                 }
+                
+                
+                
+                
                 Spacer()
             }
             .padding()
@@ -53,10 +55,10 @@ struct DevicesView: View {
                     })
                 }
                 .padding(.top)
-                List(viewModel.devices, id: \.identifier) { device in
+                List(controller.devices, id: \.identifier) { device in
                     if let name = device.name {
                         Button(action: {
-                            viewModel.saveDevice(device)
+                            controller.saveDevice(device)
                             isPickerShown = false
                         }, label: {
                             Text(name)
@@ -66,13 +68,13 @@ struct DevicesView: View {
                 Spacer()
             }
             .onAppear(perform: {
-                if !viewModel.isScanning {
-                    viewModel.startScanning()
+                if !controller.isScanning {
+                    controller.startScanning()
                 }
             })
             .onDisappear(perform: {
-                if viewModel.isScanning {
-                    viewModel.stopScanning()
+                if controller.isScanning {
+                    controller.stopScanning()
                 }
             })
             .padding()
