@@ -9,10 +9,13 @@ import Foundation
 import CoreBluetooth
 
 class DevicesController: BluetoothServiceDelegate, ObservableObject {
-    @Published var devices: [CBPeripheral] = []
+    @Published var discoveredDevices: [CBPeripheral] = []
     @Published var savedDevices: [CBPeripheral] = []
-    @Published var connectedDevices: [BTDevice] = []
+    @Published var connectedDevices: [CBPeripheral] = []
     @Published var isScanning: Bool = false
+    
+    @Published var discoveredServices: [BTService] = []
+    @Published var discoveredCharacteristics: [BTCharacteristic] = []
 
     private let bluetoothService = BluetoothService()
 
@@ -22,7 +25,7 @@ class DevicesController: BluetoothServiceDelegate, ObservableObject {
     }
 
     func startScanning() {
-        devices.removeAll()
+        discoveredDevices.removeAll()
         isScanning = true
         bluetoothService.startScanning()
     }
@@ -50,19 +53,18 @@ class DevicesController: BluetoothServiceDelegate, ObservableObject {
     // Delegate methods
 
     func didConnectToDevice(_ device: CBPeripheral) {
-        if !connectedDevices.contains(where: { $0.id == device.identifier }) {
-            let btDevice = BTDevice(id: device.identifier, name: device.name ?? "Unknown")
-            connectedDevices.append(btDevice)
+        if !connectedDevices.contains(device) {
+            connectedDevices.append(device)
         }
     }
     
     func didDisconnectFromDevice(_ device: CBPeripheral, error: Error?) {
-        connectedDevices.removeAll(where: { $0.id == device.identifier })
+        connectedDevices.removeAll(where: {$0.identifier == device.identifier})
     }
     
     func didDiscoverDevice(_ device: CBPeripheral) {
-        if !devices.contains(where: { $0.identifier == device.identifier }) {
-            devices.append(device)
+        if !discoveredDevices.contains(where: { $0.identifier == device.identifier }) {
+            discoveredDevices.append(device)
         }
     }
 
@@ -73,8 +75,20 @@ class DevicesController: BluetoothServiceDelegate, ObservableObject {
     }
     
     func didDiscoverServices(for device: CBPeripheral, services: [BTService]) {
-        if let index = connectedDevices.firstIndex(where: { $0.id == device.identifier }) {
-            connectedDevices[index].services = services
+        for service in services {
+            discoveredServices.removeAll(where: {$0.parentUUID == device.identifier})
+            if !discoveredServices.contains(where: {$0.id == service.id}) {
+                discoveredServices.append(service)
+            }
+        }
+    }
+    
+    func didDiscoverCharacteristics(for device: CBPeripheral, services: [BTService]) {
+        for service in services {
+            discoveredServices.removeAll(where: {$0.parentUUID == device.identifier})
+            if !discoveredServices.contains(where: {$0.id == service.id}) {
+                discoveredServices.append(service)
+            }
         }
     }
 }

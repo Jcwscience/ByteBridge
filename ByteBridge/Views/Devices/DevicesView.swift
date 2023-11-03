@@ -25,16 +25,18 @@ struct DevicesView: View {
                 })
                 ScrollView {
                     ForEach(controller.savedDevices, id: \.identifier) { device in
-                        RoundedRectangle(cornerRadius: 20, style: .circular)
-                            .foregroundStyle(.fill)
-                            .overlay {
-                                Text(device.name ?? "Unknown").font(.title)
-                            }
-                            .overlay(alignment: .trailing, content: {
-                                Image(systemName: "chevron.right").font(.title)
-                                    .padding(.trailing)
-                            })
-                            .frame(height: 100)
+                        NavigationLink(destination: DeviceDetailsView(controller: controller, device: device), label: {
+                            RoundedRectangle(cornerRadius: 20, style: .circular)
+                                .foregroundStyle(.fill)
+                                .overlay {
+                                    Text(device.name ?? "Unknown").font(.title)
+                                }
+                                .overlay(alignment: .trailing, content: {
+                                    Image(systemName: "chevron.right").font(.title)
+                                        .padding(.trailing)
+                                })
+                                .frame(height: 100)
+                        })
                     }
                 }
                 
@@ -55,7 +57,7 @@ struct DevicesView: View {
                     })
                 }
                 .padding(.top)
-                List(controller.devices, id: \.identifier) { device in
+                List(controller.discoveredDevices, id: \.identifier) { device in
                     if let name = device.name {
                         Button(action: {
                             controller.saveDevice(device)

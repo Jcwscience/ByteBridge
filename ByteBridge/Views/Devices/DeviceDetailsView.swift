@@ -11,23 +11,24 @@ import CoreBluetooth
 struct DeviceDetailsView: View {
     @ObservedObject var controller: DevicesController
     var device: CBPeripheral
-    @State private var deviceServices: [BTService] = []
 
     var body: some View {
         VStack {
             Button(action: {
-                controller.connectedDevices.contains(where: {$0.id == device.identifier}) ? controller.disconnectFromDevice(device) : controller.connectToDevice(device)
+                controller.connectedDevices.contains(where: {$0.identifier == device.identifier}) ? controller.disconnectFromDevice(device) : controller.connectToDevice(device)
             }, label: {
                 Capsule(style: .circular)
-                    .foregroundStyle(Color(controller.connectedDevices.contains(where: {$0.id == device.identifier}) ? .red : .green).gradient)
+                    .foregroundStyle(Color(controller.connectedDevices.contains(where: {$0.identifier == device.identifier}) ? .red : .green).gradient)
                     .overlay {
-                        Text(controller.connectedDevices.contains(where: {$0.id == device.identifier}) ? "Disconnect" : "Connect")
+                        Text(controller.connectedDevices.contains(where: {$0.identifier == device.identifier}) ? "Disconnect" : "Connect")
                             .foregroundStyle(.foreground)
                     }
                     .frame(height: 50)
             })
-            ForEach(deviceServices) { service in
-                ServiceView(service: service)
+            ForEach(controller.discoveredServices) { service in
+                if service.parentUUID == device.identifier {
+                    ServiceView(service: service)
+                }
             }
             Spacer()
         }
